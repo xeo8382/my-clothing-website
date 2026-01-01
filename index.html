@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Clothing Brand</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* HEADER */
+header {
+  background: #333;
+  color: white;
+  padding: 1rem 2rem;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  padding: 0;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a:hover {
+  color: #007bff;
+}
+
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 4rem 1rem;
+  background: #f4f4f4;
+}
+
+.hero h1 { font-size: 2.5rem; }
+
+.btn {
+  display: inline-block;
+  margin-top: 1rem;
+  background: #007bff;
+  color: white;
+  padding: 0.7rem 1.5rem;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.btn:hover { background: #0056b3; }
+
+/* PRODUCTS */
+#products { padding: 2rem; }
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.product {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 5px;
+  transition: transform 0.2s ease;
+}
+
+.product:hover { transform: translateY(-5px); }
+
+.product img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.product button {
+  margin-top: 10px;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #333;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.product button:hover { background: #007bff; }
+
+/* SECTIONS */
+#about, #contact {
+  padding: 2rem;
+  background: #f9f9f9;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: #333;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <nav>
+    <div class="logo">My Brand</div>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#" id="cart-link">Cart (0)</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section id="home" class="hero">
+  <h1>Welcome to My Clothing Brand</h1>
+  <p>Stylish apparel for every occasion</p>
+  <a href="#products" class="btn">Shop Now</a>
+</section>
+
+<section id="products">
+  <h2>Our Products</h2>
+
+  <div class="product-grid">
+    <div class="product">
+      <img src="https://via.placeholder.com/300x200" alt="T-Shirt">
+      <h3>Cotton T-Shirt</h3>
+      <p>$20</p>
+      <button class="add-to-cart" data-product="T-Shirt" data-price="20">Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://via.placeholder.com/300x200" alt="Jeans">
+      <h3>Denim Jeans</h3>
+      <p>$50</p>
+      <button class="add-to-cart" data-product="Jeans" data-price="50">Add to Cart</button>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <h2>About Us</h2>
+  <p>We create high-quality, stylish, and sustainable clothing.</p>
+</section>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <p>Email: support@mybrand.com</p>
+</section>
+
+<footer>
+  <p>&copy; 2026 My Clothing Brand</p>
+</footer>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+const cartLink = document.getElementById("cart-link");
+
+updateCart();
+
+document.querySelectorAll(".add-to-cart").forEach(button => {
+  button.addEventListener("click", () => {
+    const product = button.dataset.product;
+    const price = parseFloat(button.dataset.price);
+
+    cart.push({ product, price });
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    updateCart();
+    alert(product + " added to cart!");
+  });
+});
+
+cartLink.addEventListener("click", () => {
+  if(cart.length === 0){
+    alert("Your cart is empty.");
+    return;
+  }
+
+  let message = "Your Cart:\n\n";
+  let total = 0;
+
+  cart.forEach(item => {
+    message += `${item.product} - $${item.price}\n`;
+    total += item.price;
+  });
+
+  message += `\nTotal: $${total}`;
+  alert(message);
+});
+
+function updateCart() {
+  cartLink.textContent = `Cart (${cart.length})`;
+}
+</script>
+
+</body>
+</html>
